@@ -13,12 +13,9 @@
 ;; 关闭启动帮助画面
 (setq inhibit-splash-screen 1)
 
-;; 关闭缩进
-;; (electric-indent-mode -1)
-
 ;;文本模式语法高亮
-(require 'org)
-(setq org-src-fontify-natively t)
+;; (require 'org)
+;; (setq org-src-fontify-natively t)
 
 ;;windows修改默认字体为中文字体防止解决卡顿问题
 (set-default-font "-outline-萍方0-normal-normal-normal-sans-20-*-*-*-p-*-iso8859-1")
@@ -41,10 +38,10 @@
 ;; (set-face-attribute 'default nil :height 115)
 
 ;;设置窗口位置为屏库左上角(0,0)
-;; (set-frame-position (selected-frame) 500 200)
+(set-frame-position (selected-frame) 500 200)
 
 ;;默认全屏
-;;(setq initial-frame-alist (quote ((fullscreen . maximized))))
+(setq initial-frame-alist (quote ((fullscreen . maximized))))
 
 ;;输入字符替换选中部分的文字
 (delete-selection-mode 1)
@@ -60,7 +57,7 @@
 ;; (load-theme 'monokai-theme 1);;每次打开编辑器自动加载主题
 
 ;;打开自动补全
-(global-company-mode 1)
+;; (global-company-mode 1)
 
 ;; 快速打开配置文件
 (defun open-init-file()
