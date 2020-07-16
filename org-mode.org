@@ -1,0 +1,15 @@
+* Emacs-Org-mode
+** TODO 二级标题                                                                                        
+** DONE 用Tab键可以展开和折叠标题a
+C-c C-t用于将条目变成代办事项，可以切换成如上两种状态
+** 编辑代码块因为不能进行语法检查所以可以按快捷键Ctrl+'进行单独的编辑，然后保存
+>s + Tab可以直接插入代码块
+#+BEGIN_SRC emacs-lisp
+  ;; Your code goes here
+  ;; 你的代码写在这里
+#+END_SRC
+** 配置好agenda-mode，你只需将你的 *.org 文件放入上面所指定的文件夹中就可以开始使用 Agenda 模式了
+C-c C-s 选择想要开始的时间
+C-c C-d 选择想要结束的时间
+C-c a 可以打开 Agenda 模式菜单并选择不同的可视方式（ r ）
+
