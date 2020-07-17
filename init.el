@@ -3,8 +3,11 @@
   (interactive)
   (find-file "~/.emacs.d/init.el"))
 ;; 这一行代码，将函数 open-init-file 绑定到 <f2> 键上
-(global-set-key (kbd "<f2>") 'open-init-file)
+(global-set-key (kbd "<f3>") 'open-init-file)
 
+(global-set-key (kbd "C-h C-f") 'find-function)
+(global-set-key (kbd "C-h C-v") 'find-variable)
+(global-set-key (kbd "C-h C-k") 'find-function-on-key)
 
 ;; 关闭工具栏，tool-bar-mode 即为一个 Minor Mode
 (tool-bar-mode -1)
@@ -41,7 +44,10 @@
 (set-frame-height (selected-frame) 30)
 ;; 默认全屏
 (setq initial-frame-alist (quote ((fullscreen . maximized))))
-
+;; 设置默认 Org Agenda 文件目录
+(setq org-agenda-files '("~/org"))
+;; 设置 org-agenda 打开快捷键
+(global-set-key (kbd "C-c a") 'org-agenda)
 ;; 输入字符替换选中部分的文字
 (delete-selection-mode 1)
 ;; 高亮当前行
@@ -49,12 +55,10 @@
 ;; 高亮括号匹配
 (add-hook 'emacs-lisp-mode-hook 'show-paren-mode)
 ;; (show-paren-mode 1)
-;; 自动生成括号匹配
-(smartparens-global-mode t)
 ;; 代码块注释和反注释
 (global-set-key (kbd "C-c C-/") 'comment-or-uncomment-region)
 ;; 自动加载更新内容
-(global-auto-revert-mode 1)
+(global-auto-revert-mode t)
 ;; 使用 'y/n' 代替 'yes/no'
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -71,20 +75,22 @@
 		;; --- Auto-completion ---
 		company
 		;; --- Better Editor ---
+		;; smex
 		hungry-delete
 		swiper
 		counsel
 		smartparens
+		popwin
 		;; --- Major Mode ---
 		js2-mode
 		;; --- Minor Mode ---
 		nodejs-repl
-		exec-path-from-shell
+		;; exec-path-from-shell
 		;; --- Themes ---
 		monokai-theme
 		;; solarized-theme
 		) "Default packages")
-
+;; 将自定义的包设置为默认的包
  (setq package-selected-packages my/packages)
 
  (defun my/packages-installed-p ()
@@ -103,6 +109,9 @@
 ;; (when (memq window-system '(mac ns))
 ;;   (exec-path-from-shell-initialize))
 
+;; 自动生成括号匹配
+(require 'smartparens-config)
+(smartparens-global-mode t)
 ;; 打开自动补全
 (global-company-mode t)
 ;; 加载主题
@@ -121,7 +130,52 @@
      ("\\.C\\'" . c++-mode))
    auto-mode-alist))
 
-;; 设置默认 Org Agenda 文件目录
-(setq org-agenda-files '("~/org"))
-;; 设置 org-agenda 打开快捷键
-(global-set-key (kbd "C-c a") 'org-agenda)
+;; smex，增强M-x
+;; (require 'smex)  ; Not needed if you use package.el
+;; (smex-initialize) ; Can be omitted. This might cause a (minimal) delay
+                    ; when Smex is auto-initialized on its first run.
+;; (global-set-key (kbd "M-x") 'smex)
+
+;; swiper
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq enable-recursive-minibuffers t)
+;; enable this if you want `swiper' to use it
+;; (setq search-default-mode #'char-fold-to-regexp)
+(global-set-key "\C-s" 'swiper)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "<f6>") 'ivy-resume)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "<f1> f") 'counsel-describe-function)
+(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+(global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
+(global-set-key (kbd "<f1> l") 'counsel-find-library)
+(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+(global-set-key (kbd "C-c g") 'counsel-git)
+(global-set-key (kbd "C-c j") 'counsel-git-grep)
+(global-set-key (kbd "C-c k") 'counsel-ag)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-idle-delay 0.05)
+ '(company-minimum-prefix-length 3)
+ '(package-selected-packages
+   (quote
+    (popwin company hungry-delete swiper counsel smartparens js2-mode nodejs-repl monokai-theme))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(js2-external-variable ((t (:foreground "SlateGray3")))))
+
+;; 方便关闭的查询窗口
+(require 'popwin)
+(popwin-mode t)
